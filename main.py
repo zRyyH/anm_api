@@ -8,10 +8,8 @@ from config import EMAIL_CONFIG
 from mailer import EmailSender
 from directus import get_me
 import logging
-import locale
 import uuid
 
-locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8")
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
@@ -56,8 +54,8 @@ def send_email(request_token: str, email: str, _=Depends(check_auth)):
             <h2 style="font-size: 18px; margin: 0 0 12px;">Resumo de Faturas</h2>
             <p style="margin: 4px 0;"><strong>Empresa:</strong> {dados[0]["sacado"]}</p>
             <p style="margin: 4px 0;"><strong>Total de faturas:</strong> {len(dados)}</p>
-            <p style="margin: 4px 0;"><strong>Valor total:</strong> {locale.currency(sum(item["valor"] for item in dados), symbol=True, grouping=True)}</p>
-            <p style="margin: 4px 0;"><strong>Valor total atualizado:</strong> {locale.currency(sum(item["valorAtualizado"] for item in dados), symbol=True, grouping=True)}</p>
+            <p style="margin: 4px 0;"><strong>Valor total:</strong> R$ {sum(item["valor"] for item in dados)}</p>
+            <p style="margin: 4px 0;"><strong>Valor total atualizado:</strong> R$ {sum(item["valorAtualizado"] for item in dados)}</p>
             </div>
         </body>
         </html>
