@@ -1,0 +1,8 @@
+services:
+  fastapi-app:
+    build: .
+    container_name: fastapi-consultas
+    network_mode: host
+    env_file:
+      - .env
+    restart: unless-stopped
