@@ -46,16 +46,19 @@ def send_email(request_token: str, email: str, _=Depends(check_auth)):
         dados = entry["data"]
 
         # Gerar resumo
+        total_valor = sum(item["valor"] for item in dados)
+        total_valor_atualizado = sum(item["valorAtualizado"] for item in dados)
+
         body = f"""
         <!DOCTYPE html>
         <html>
         <body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 20px; background: #fafafa;">
             <div style="max-width: 480px; margin: auto; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 16px;">
-            <h2 style="font-size: 18px; margin: 0 0 12px;">Resumo de Faturas</h2>
-            <p style="margin: 4px 0;"><strong>Empresa:</strong> {dados[0]["sacado"]}</p>
-            <p style="margin: 4px 0;"><strong>Total de faturas:</strong> {len(dados)}</p>
-            <p style="margin: 4px 0;"><strong>Valor total:</strong> R$ {sum(item["valor"] for item in dados)}</p>
-            <p style="margin: 4px 0;"><strong>Valor total atualizado:</strong> R$ {sum(item["valorAtualizado"] for item in dados)}</p>
+                <h2 style="font-size: 18px; margin: 0 0 12px;">Resumo de Faturas</h2>
+                <p style="margin: 4px 0;"><strong>Empresa:</strong> {dados[0]["sacado"]}</p>
+                <p style="margin: 4px 0;"><strong>Total de faturas:</strong> {len(dados)}</p>
+                <p style="margin: 4px 0;"><strong>Valor total:</strong> R$ {total_valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")</p>
+                <p style="margin: 4px 0;"><strong>Valor total atualizado:</strong> R$ {total_valor_atualizado:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")</p>
             </div>
         </body>
         </html>
